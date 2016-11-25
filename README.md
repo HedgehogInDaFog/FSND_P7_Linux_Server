@@ -2,9 +2,9 @@
 
 ##  IP, Port, URL
 ```
-IP: 35.161.180.160 
+IP: 35.164.114.224
 Port: 2200  
-URL:<http://ec2-35-161-180-160.us-west-2.compute.amazonaws.com/> 
+URL: http://ec2-35-164-114-224.us-west-2.compute.amazonaws.com/ 
 ``` 
 
 
