@@ -1,29 +1,38 @@
 # FSND Project 7 - Linux Server Configuration
 
 ##  IP, Port, URL
+```
 IP: 35.161.180.160 
 Port: 2200  
-URL:<http://ec2-35-161-180-160.us-west-2.compute.amazonaws.com/>  
+URL:<http://ec2-35-161-180-160.us-west-2.compute.amazonaws.com/> 
+``` 
 
 
 ## Configuration Changes
 
 ### User config:
+```
 useradd grader
 vi /etc/sudoers.d/grader
+```
 
 ### SSH Config (change port, generate key for user):
+```
 vi /etc/ssh/sshd_config 
 ssh-keygen 
 vi /root/.ssh/authorized_keys 
 chmod 700 ~/.ssh
 chmod 644 ~/.ssh/authorized_keys
+```
 
-### Update software
+### Update software:
+```
 sudo apt-get update
 sudo apt-get upgrade
+```
 
-### Firewall Config
+### Firewall Config:
+```
 ufw status
 ufw default deny incoming
 ufw default allow outgoing
@@ -31,11 +40,15 @@ ufw allow 2200/tcp
 ufw allow 80/tcp
 ufw allow 123
 ufw enable
+```
 
-### Date config
+### Date config:
+```
 sudo dpkg-reconfigure tzdata
+```
 
-### Install packages
+### Install packages:
+```
 sudo apt-get install apache
 sudo apt-get install apache2
 sudo apt-get install libapache2-mod-wsgi
@@ -56,28 +69,36 @@ sudo pip install flask-httpauth
 sudo pip install redis
 sudo pip install oauth2client
 sudo pip install sqlalchemy
+```
 
 ### Clone Git repository:
+```
 sudo git clone https://github.com/TrueZarathustra/FSND_Item_Catalog.git
 sudo touch .htaccess
-sudo vi .htaccess 
+sudo vi .htaccess
+``` 
 
-### Configure Apache, Postgresql
+### Configure Apache, Postgresql:
+```
 sudo vi /etc/apache2/sites-available/FSND_Item_Catalog.conf
 sudo vi flaskapp.wsgi 
 sudo a2ensite FSND_Item_Catalog
 sudo service apache2 reload
 sudo adduser catalog
 sudo su - postgres
+```
 
-### Fix python code (change path to client_secrets.json, DB_connection, etc)
+### Fix python code (change path to client_secrets.json, DB_connection, etc):
+```
 sudo vi database_setup.py
 sudo vi project.py
 sudo vi lotsofbooks.py
 sudo python lotsofbooks.py
 sudo python database_setup.py
+```
 
-### URLs
+### URLs:
+```
 http://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 http://ru.stackoverflow.com/questions/140785/%D0%9A%D0%B0%D0%BA-%D0%B4%D0%BE%D0%B1%D0%B0%D0%B2%D0%B8%D1%82%D1%8C-%D0%BF%D1%83%D1%82%D1%8C-%D0%B2-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%83%D1%8E-path
 http://stackoverflow.com/questions/5841531/django-mod-wsgi-apache-importerror-at-no-module-named-djproj-urls
@@ -101,3 +122,4 @@ https://linux.die.net/man/1/ssh-keygen
 https://www.opennet.ru/cgi-bin/opennet/man.cgi?topic=ssh-keygen&category=1
 http://unix.stackexchange.com/questions/36072/how-to-expire-a-password-for-inital-account-creation
 http://superuser.com/questions/626843/does-the-root-account-always-have-uid-gid-0
+```
