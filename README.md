@@ -52,16 +52,9 @@ sudo dpkg-reconfigure tzdata
 
 ### Install packages:
 ```
-sudo apt-get install apache
-sudo apt-get install apache2
-sudo apt-get install libapache2-mod-wsgi
-sudo apt-get install postgresql
-sudo apt-get install postgresql-server-dev-9.3
-sudo apt-get install postgresql-server-dev-all
-sudo apt-get install libapache2-mod-wsgi
-sudo apt-get install python-pip
-sudo apt-get install python-psycopg2 
-sudo apt-get install postgresql postgresql-contrib
+sudo apt-get install apache2 libapache2-mod-wsgi
+sudo apt-get install postgresql postgresql-server-dev-9.3 postgresql-server-dev-all postgresql-contrib
+sudo apt-get install python-pip python-psycopg2 git
 sudo pip install virtualenv
 sudo pip install Flask 
 sudo pip install bleach
@@ -84,11 +77,63 @@ sudo vi .htaccess
 ### Configure Apache, Postgresql:
 ```
 sudo vi /etc/apache2/sites-available/FSND_Item_Catalog.conf
+```
+
+configure flaskapp.wsgi:
+```
 sudo vi flaskapp.wsgi 
+# Add:
+#!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/FSND_Item_Catalog/")
+from ItemCatalog import app as application
+application.secret_key = 'super_secret_key'
+```
+
+configure FSDN_Item_Catalog.conf:
+```
+sudo vi /etc/apache2/sites-available/FSND_Item_Catalog.conf
+#Add:
+<VirtualHost *:80>
+        ServerName 52.34.247.81
+        ServerAdmin admin@mywebsite.com
+        WSGIScriptAlias / /var/www/FSND_Item_Catalog/flaskapp.wsgi
+        <Directory /var/www/FSND_Item_Catalog/>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        Alias /static /var/www/FSND_Item_Catalog/static
+        <Directory /var/www/FSND_Item_Catalog/static/>
+            Order allow,deny
+            Allow from all
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        LogLevel warn
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+Apply changes:
+```
 sudo a2ensite FSND_Item_Catalog
 sudo service apache2 reload
+```
+
+Configure DB:
+```
 sudo adduser catalog
 sudo su - postgres
+psql
+
+CREATE ROLE catalog WITH CREATEDB;
+ALTER ROLE catalog WITH PASSWORD 'qwerty';
+ALTER ROLE catalog LOGIN;
+CREATE DATABASE catalog WITH OWNER catalog;
+\c catalog
+REVOKE ALL ON SCHEMA public FROM public;
+GRANT ALL ON SCHEMA public TO catalog;
 ```
 
 ### Fix python code (change path to client_secrets.json, DB_connection, etc):
