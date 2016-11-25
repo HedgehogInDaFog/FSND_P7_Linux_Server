@@ -88,7 +88,7 @@ import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0,"/var/www/FSND_Item_Catalog/")
-from ItemCatalog import app as application
+from project import app as application
 application.secret_key = 'super_secret_key'
 ```
 
