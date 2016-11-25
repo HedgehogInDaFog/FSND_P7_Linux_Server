@@ -12,16 +12,19 @@ URL:<http://ec2-35-161-180-160.us-west-2.compute.amazonaws.com/>
 
 ### User config:
 ```
-useradd grader
-vi /etc/sudoers.d/grader
+useradd -m grader
+vi /etc/sudoers.d/grader  # (add "grader ALL=(ALL) NOPASSWD:ALL" to this file)
 ```
 
 ### SSH Config (change port, generate key for user):
 ```
-vi /etc/ssh/sshd_config 
+vi /etc/ssh/sshd_config  # (change port)
+service ssh restart
+
 ssh-keygen 
-vi /root/.ssh/authorized_keys 
+vi /root/.ssh/authorized_kcat eys 
 chmod 700 ~/.ssh
+cat .ssh/id_rsa.pub >> .ssh/authorized_keys
 chmod 644 ~/.ssh/authorized_keys
 ```
 
@@ -33,13 +36,13 @@ sudo apt-get upgrade
 
 ### Firewall Config:
 ```
-ufw status
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow 2200/tcp
-ufw allow 80/tcp
-ufw allow 123
-ufw enable
+sudo ufw status
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 2200/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 123
+sudo ufw enable
 ```
 
 ### Date config:
